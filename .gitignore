@@ -1,0 +1,5 @@
+output/training_con/0_Transformer/result.pt
+output/training_nli/0_Transformer/result.pt
+output/training_sts/0_Transformer/result.pt
+
+.cache
