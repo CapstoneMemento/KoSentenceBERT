@@ -1,6 +1,8 @@
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
 
+# 판결 요지 하나를 문장 별로 비교한다.
+
 model_path = './output/training_sts'
 
 embedder = SentenceTransformer(model_path)
@@ -31,10 +33,10 @@ for query in queries:
     #top_results = np.argpartition(-cos_scores, range(top_k))[0:top_k]
 
     print("\n\n======================\n\n")
-    print("Query:", query)
+    print("사용자:\n\n" + query)
     print("\n")
     # print("\nTop 5 most similar sentences in corpus:")
 
     # for idx in top_results[0:top_k]:
-    print(corpus[idx].strip(), "(Score: %.4f)" % (cos_scores))
+    print("정답:\n\n" + corpus[idx].strip(), "\n\n(Score: %.4f)" % (cos_scores))
     print("\n\n======================\n\n")
