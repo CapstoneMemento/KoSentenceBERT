@@ -1,14 +1,80 @@
-# Ko-Sentence-BERT-SKTBERT
-- SKT KoBERT를 사용하여 SentenceBERT 학습 <br>
-    - https://github.com/SKTBrain/KoBERT
-> **Note** <br>
-> 다양한 문장 임베딩 모델 및 결과는 다음 링크를 참고해주세요. <br> [[Sentence-Embedding-Is-All-You-Need]](https://github.com/BM-K/Sentence-Embedding-Is-All-You-Need)
+# CapstoneMemento KoSentenceBERT repository
+- KoSentenceBERT를 실행하기 위한 레포지토리
+- fork한 레포지토리: https://github.com/BM-K/KoSentenceBERT-SKT
 
 ## Installation
-- **huggingface transformer, sentence transformers, tokenizers** 라이브러리 코드를 직접 수정하므로 가상환경 사용을 권장합니다.  <br>
-- 사용한 Docker image는 Docker Hub에 첨부합니다. <br>
-    - https://hub.docker.com/r/klbm126/kosbert_image/tags <br>
+- 실행환경: 윈도우 10 Home
+- 설치과정에서 에러가 날 수 있어 1. Ubuntu를 사용하는 방법과 2. 도커를 사용하는 방법 두 가지 설명드리겠습니다.
+### 1. Ubuntu 환경에서의 실행
+#### 0) Prerequisites
+- Windows 터미널이 설치되어 있어야 합니다.
+- python 3.9가 설치되어 있어야 합니다.
+#### 1) WSL 설치하기
+- Windows Powershell을 실행하여 다음 명령어를 실행합니다.
+```
+wsl --install
+```
 
+#### 2) Ubuntu 사용하기
+- 윈도우 터미널을 실행하여 Ubuntu를 실행합니다.
+
+#### 3) Anaconda 설치하기
+- Python 3.9 버전을 가진 Anaconda를 설치하기 위해 [Anaconda Old packages lists](https://docs.anaconda.com/anaconda/packages/oldpkglists/)에서 2021.11 Anaconda를 설치합니다.
+- Anaconda 패키지가 있는 [이 주소](https://repo.anaconda.com/archive/)에서 깔고 싶은 버전을 찾아 오른쪽 키를 눌러 링크를 복사한 후, /opt 경로에 설치합니다.
+- 윈도우 터미널을 권리자 권한으로 실행하여 Ubuntu를 열고, 다음 명령어를 입력합니다.
+```
+cd /opt
+wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
+sudo bash Anaconda3-2021.11-Linux-x86_64.sh
+```
+
+#### 4) Anaconda 실행하기
+- 다음 명령어를 입력합니다.
+```
+source /opt/anaconda3/bin/activate
+conda init
+source ~/.bashrc
+```
+
+#### 5) KoSentenceBERT 설치하기
+- home 경로에 KoSentenceBERT를 설치하기 위해 다음 명령어를 입력합니다.
+```
+cd ~/
+git clone https://github.com/SKTBrain/KoBERT.git
+cd KoBERT
+pip install -r requirements.txt
+pip install .
+cd ..
+git clone https://github.com/BM-K/KoSentenceBERT_SKTBERT.git
+cd KoSentenceBERT_SKTBERT
+pip install -r requirements.txt
+```
+
+#### 6) KoSentenceBERT_SKTBERT의 transformers, tokenizers, sentence_transformers 디렉토리 옮기기
+- 해당 디렉토리를 /opt/anaconda3/python3.9/site-packages에 이동합니다.
+
+
+### 2. 도커를 사용하여 실행
+#### 0) Prerequisites
+- VScode가 설치되어 있어야 합니다.
+- Docker가 설치되어 있어야 합니다.
+#### 1) Docker 이미지를 pull 하기
+- 사용한 Docker image <br>
+    - https://hub.docker.com/r/klbm126/kosbert_image/tags <br>
+- VScode 터미널에서 다음 명령어를 실행합니다.
+```
+docker pull klbm126/kosbert_image:latest
+```
+
+#### 2)  Docker 컨테이너를 실행하기
+- VScode 터미널에서 다음 명령어를 실행합니다.
+```
+docker run -it --name=kosbert_image klbm126/kosbert_image:latest
+```
+- 해당 명령어를 실행하면 kosbert_image라는 이름의 컨테이너가 실행됩니다.
+
+#### 3) KoSentenceBERT 설치하기
+- 다음 명령어를 차례대로 입력합니다.
 ```
 git clone https://github.com/SKTBrain/KoBERT.git
 cd KoBERT
@@ -16,9 +82,13 @@ pip install -r requirements.txt
 pip install .
 cd ..
 git clone https://github.com/BM-K/KoSentenceBERT_SKTBERT.git
+cd KoSentenceBERT_SKTBERT
 pip install -r requirements.txt
 ```
- - transformer, tokenizers, sentence_transformers 디렉토리를 opt/conda/lib/python3.7/site-packages/ 로 이동합니다. <br>
+
+#### 4) KoSentenceBERT_SKTBERT의 transformers, tokenizers, sentence_transformers 디렉토리 옮기기
+- 해당 디렉토리를 /opt/conda/lib/python3.7/site-packages에 이동합니다.
+
 
 ## Train Models
  - 모델 학습을 원하시면 KoSentenceBERT 디렉토리 안에 KorNLUDatasets이 존재하여야 합니다. <br>
@@ -60,186 +130,93 @@ output/training_sts/0_Transformer/result.pt <br>
 - Performance comparison with other models [[KLUE-PLMs]](https://github.com/BM-K/Sentence-Embedding-is-all-you-need#performance).
 
 ## Application Examples
- - 생성 된 문장 임베딩을 다운 스트림 애플리케이션에 사용할 수 있는 방법에 대한 몇 가지 예를 제시합니다.
  - STS pretrained 모델을 통해 진행합니다.
 
-### Semantic Search
-SemanticSearch.py는 주어진 문장과 유사한 문장을 찾는 작업입니다.<br>
+### Semantic Compute
+SemanticCompute.py는 corpus 문장과 queries 문장의 유사도를 일대일로 계산하고 출력하는 코드입니다.<br>
 먼저 Corpus의 모든 문장에 대한 임베딩을 생성합니다.
 ```python
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
+
+# 판결 요지 하나를 문장 별로 비교한다.
 
 model_path = './output/training_sts'
 
 embedder = SentenceTransformer(model_path)
 
 # Corpus with example sentences
-corpus = ['한 남자가 음식을 먹는다.',
-          '한 남자가 빵 한 조각을 먹는다.',
-          '그 여자가 아이를 돌본다.',
-          '한 남자가 말을 탄다.',
-          '한 여자가 바이올린을 연주한다.',
-          '두 남자가 수레를 숲 속으로 밀었다.',
-          '한 남자가 담으로 싸인 땅에서 백마를 타고 있다.',
-          '원숭이 한 마리가 드럼을 연주한다.',
-          '치타 한 마리가 먹이 뒤에서 달리고 있다.']
+corpus = [
+    '특허권침해소송의 상대방이 제조 등을 하는 제품 또는 사용하는 방법(이하 ‘침해제품 등’이라고 한다)이 특허발명의 특허권을 침해한다고 하기 위해서는 특허발명의 특허청구범위에 기재된 각 구성요소와 그 구성요소 간의 유기적 결합관계가 침해제품 등에 그대로 포함되어 있어야 한다.',
+    '침해제품 등에 특허발명의 특허청구범위에 기재된 구성 중 변경된 부분이 있는 경우에도, 특허발명과 과제 해결원리가 동일하고, 특허발명에서와 실질적으로 동일한 작용효과를 나타내며, 그와 같이 변경하는 것이 그 발명이 속하는 기술분야에서 통상의 지식을 가진 사람이라면 누구나 쉽게 생각해 낼 수 있는 정도라면, 특별한 사정이 없는 한 침해제품 등은 특허발명의 특허청구범위에 기재된 구성과 균등한 것으로서 여전히 특허발명의 특허권을 침해한다고 보아야 한다.']
 
 corpus_embeddings = embedder.encode(corpus, convert_to_tensor=True)
 
 # Query sentences:
-queries = ['한 남자가 파스타를 먹는다.',
-           '고릴라 의상을 입은 누군가가 드럼을 연주하고 있다.',
-           '치타가 들판을 가로 질러 먹이를 쫓는다.']
+queries = [
+    '특허권침해소송의 상대방이 제조 등을 하는 제품이나 사용하는 방법(이하 ‘침해제품 등’)이 특허발명의 특허권을 침해한다 하기위해선 특허발명의 특허청구범위에 기재된 각 구성요소, 그리고 그 구성요소 간의 유기적 결합관계가 침해제품 등에 그대로 포함돼 있어야한다.',
+    '침해제품 등에 특허발명의 특허청구범위에 기재된 구성 중 변경된 부분이 있는 경우 또한, 특허발명과 과제 해결원리가 동일하며 특허발명에서와 실질적으로 동일한 작용효과를 나타내고, 이처럼 변경하는 것이 해당 발명이 속하는 기술분야에서 통상의 지식을 가진 사람이라면 누구든지 쉽게 생각해낼수 있는 정도라면, 특별한 사정이 없는한 침해제품 등은 특허발명의 특허청구범위에 기재된 구성과 균등한 것으로 여전히 특허발명의 특허권을 침해한다고 봐야 된다.']
 
-# Find the closest 5 sentences of the corpus for each query sentence based on cosine similarity
-top_k = 5
+# 코사인 유사도에 기반하여 corpus[i]와 queries[i]의 유사도 구하기
+idx = -1
 for query in queries:
+    idx = idx + 1
     query_embedding = embedder.encode(query, convert_to_tensor=True)
-    cos_scores = util.pytorch_cos_sim(query_embedding, corpus_embeddings)[0]
+    cos_scores = util.pytorch_cos_sim(
+        query_embedding, corpus_embeddings)[0][idx]
     cos_scores = cos_scores.cpu()
 
-    #We use np.argpartition, to only partially sort the top_k results
-    top_results = np.argpartition(-cos_scores, range(top_k))[0:top_k]
-
+    # 사용자 입력 문장 출력
     print("\n\n======================\n\n")
-    print("Query:", query)
-    print("\nTop 5 most similar sentences in corpus:")
+    print("사용자:\n\n" + query)
+    print("\n")
 
-    for idx in top_results[0:top_k]:
-        print(corpus[idx].strip(), "(Score: %.4f)" % (cos_scores[idx]))
-        
+    # 퀴즈 정답과 계산된 유사도 출력
+    print("정답:\n\n" + corpus[idx].strip(), "\n\n(Score: %.4f)" % (cos_scores))
+    print("\n\n======================\n\n")
+
 ```
 <br> 결과는 다음과 같습니다 :
 ```
 ======================
 
 
-Query: 한 남자가 파스타를 먹는다.
+사용자:
 
-Top 5 most similar sentences in corpus:
-한 남자가 음식을 먹는다. (Score: 0.6800)
-한 남자가 빵 한 조각을 먹는다. (Score: 0.6735)
-한 남자가 말을 탄다. (Score: 0.1256)
-두 남자가 수레를 숲 솦으로 밀었다. (Score: 0.1077)
-한 남자가 담으로 싸인 땅에서 백마를 타고 있다. (Score: 0.0968)
+특허권침해소송의 상대방이 제조 등을 하는 제품이나 사용하는 방법(이하 ‘침해제품 등’)이 특허발명의 특허권을 침해한다 하기위해선 특허발명의 특허청구범위에 기재된 각 구성요소, 그리고 그 구성요소 간의 유기적 결합관계가 침해제품 등에 그대로 포함돼 있어야한다.
 
 
-======================
+정답:
 
+특허권침해소송의 상대방이 제조 등을 하는 제품 또는 사용하는 방법(이하 ‘침해제품 등’이라고 한다)이 특허발명의 특허권을 침해한다고 하기 위해서는 특허발명의 특허청구범위에 기재된 각 구성요소와 그 구성요소 간의 유기적 결합관계가 침해제품 등에 그대로 포함되어 있어야 한다. 
 
-Query: 고릴라 의상을 입은 누군가가 드럼을 연주하고 있다.
-
-Top 5 most similar sentences in corpus:
-원숭이 한 마리가 드럼을 연주한다. (Score: 0.6832)
-한 여자가 바이올린을 연주한다. (Score: 0.2885)
-치타 한 마리가 먹이 뒤에서 달리고 있다. (Score: 0.2278)
-그 여자가 아이를 돌본다. (Score: 0.2018)
-한 남자가 말을 탄다. (Score: 0.1397)
+(Score: 0.9882)
 
 
 ======================
 
 
-Query: 치타가 들판을 가로 질러 먹이를 쫓는다.
 
-Top 5 most similar sentences in corpus:
-치타 한 마리가 먹이 뒤에서 달리고 있다. (Score: 0.8141)
-두 남자가 수레를 숲 솦으로 밀었다. (Score: 0.3707)
-원숭이 한 마리가 드럼을 연주한다. (Score: 0.1842)
-한 남자가 말을 탄다. (Score: 0.1716)
-한 남자가 담으로 싸인 땅에서 백마를 타고 있다. (Score: 0.1519)
+======================
 
-```
-### Clustering
-Clustering.py는 문장 임베딩 유사성을 기반으로 유사한 문장을 클러스터링하는 예를 보여줍니다. <br>
-이전과 마찬가지로 먼저 각 문장에 대한 임베딩을 계산합니다. <br>
-```python
-from sentence_transformers import SentenceTransformer, util
-import numpy as np
 
-model_path = './output/training_sts'
+사용자:
 
-embedder = SentenceTransformer(model_path)
+침해제품 등에 특허발명의 특허청구범위에 기재된 구성 중 변경된 부분이 있는 경우 또한, 특허발명과 과제 해결원리가 동일하며 특허발명에서와 실질적으로 동일한 작용효과를 나타내고, 이처럼 변경하는 것이 해당 발명이 속하는 기술분야에서 통상의 지식을 가진 사람이라면 누구든지 쉽게 생각해낼수 있는 정도라면, 특별한 사정이 없는한 침해제품 등은 특허발명의 특허청구범위에 기재된 구성과 균등한 것으로 여전히 특허발명의 특허권을 침해한다고 봐야 된다.
 
-# Corpus with example sentences
-corpus = ['한 남자가 음식을 먹는다.',
-          '한 남자가 빵 한 조각을 먹는다.',
-          '그 여자가 아이를 돌본다.',
-          '한 남자가 말을 탄다.',
-          '한 여자가 바이올린을 연주한다.',
-          '두 남자가 수레를 숲 속으로 밀었다.',
-          '한 남자가 담으로 싸인 땅에서 백마를 타고 있다.',
-          '원숭이 한 마리가 드럼을 연주한다.',
-          '치타 한 마리가 먹이 뒤에서 달리고 있다.',
-          '한 남자가 파스타를 먹는다.',
-          '고릴라 의상을 입은 누군가가 드럼을 연주하고 있다.',
-          '치타가 들판을 가로 질러 먹이를 쫓는다.']
 
-corpus_embeddings = embedder.encode(corpus)
+정답:
 
-# Then, we perform k-means clustering using sklearn:
-from sklearn.cluster import KMeans
+침해제품 등에 특허발명의 특허청구범위에 기재된 구성 중 변경된 부분이 있는 경우에도, 특허발명과 과제 해결원리가 동일하고, 특허발명에서와 실질적으로 동일한 작용효과를 나타내며, 그와 같이 변경하는 것이 그 발명이 속하는 기술분야에서 통상의 지식을 가진 사람이라면 누구나 쉽게 생각해 낼 수 있는 정도라면, 특별한 사정이 없는 한 침해제품 등은 특허발명의 특허청구범위에 기재된 구성과 균등한 것으로서 여전히 특허발명의 특허권을 침해한다고 보아야 한다. 
 
-num_clusters = 5
-clustering_model = KMeans(n_clusters=num_clusters)
-clustering_model.fit(corpus_embeddings)
-cluster_assignment = clustering_model.labels_
+(Score: 0.9846)
 
-clustered_sentences = [[] for i in range(num_clusters)]
-for sentence_id, cluster_id in enumerate(cluster_assignment):
-    clustered_sentences[cluster_id].append(corpus[sentence_id])
 
-for i, cluster in enumerate(clustered_sentences):
-    print("Cluster ", i+1)
-    print(cluster)
-    print("")
-
-```
-결과는 다음과 같습니다 :
- ```
-Cluster  1
-['그 여자가 아이를 돌본다.', '원숭이 한 마리가 드럼을 연주한다.', '고릴라 의상을 입은 누군가가 드럼을 연주하고 있다.']
-
-Cluster  2
-['한 남자가 음식을 먹는다.', '한 남자가 빵 한 조각을 먹는다.', '한 남자가 파스타를 먹는다.']
-
-Cluster  3
-['치타 한 마리가 먹이 뒤에서 달리고 있다.', '치타가 들판을 가로 질러 먹이를 쫓는다.']
-
-Cluster  4
-['한 남자가 말을 탄다.', '두 남자가 수레를 숲 솦으로 밀었다.', '한 남자가 담으로 싸인 땅에서 백마를 타고 있다.']
-
-Cluster  5
-['한 여자가 바이올린을 연주한다.']
+======================
 ```
 
-## Citing
-```bibtex
-@inproceedings{reimers-2019-sentence-bert,
-    title = "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
-    author = "Reimers, Nils and Gurevych, Iryna",
-    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing",
-    month = "11",
-    year = "2019",
-    publisher = "Association for Computational Linguistics",
-    url = "http://arxiv.org/abs/1908.10084",
-}
-@article{reimers-2020-multilingual-sentence-bert,
-    title = "Making Monolingual Sentence Embeddings Multilingual using Knowledge Distillation",
-    author = "Reimers, Nils and Gurevych, Iryna",
-    journal= "arXiv preprint arXiv:2004.09813",
-    month = "04",
-    year = "2020",
-    url = "http://arxiv.org/abs/2004.09813",
-}
-@article{ham2020kornli,
-  title={KorNLI and KorSTS: New Benchmark Datasets for Korean Natural Language Understanding},
-  author={Ham, Jiyeon and Choe, Yo Joong and Park, Kyubyong and Choi, Ilji and Soh, Hyungjoon},
-  journal={arXiv preprint arXiv:2004.03289},
-  year={2020}
-}
-```
 
-## Reference Repo
-- [SKT KoBERT](https://github.com/SKTBrain/KoBERT)
+## Reference
+- [원본 레포](https://github.com/BM-K/KoSentenceBERT-SKT)
+- [우분투 황경에서 KoSBERT 실행](https://seyeon.tistory.com/90)
+- [도커를 사용하여 KoSBERT 실행](https://velog.io/@orange6/%ED%8C%90%EB%A1%80-%EC%95%94%EA%B8%B0-%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C)
