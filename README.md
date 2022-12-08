@@ -219,4 +219,4 @@ for query in queries:
 ## Reference
 - [원본 레포](https://github.com/BM-K/KoSentenceBERT-SKT)
 - [우분투 환경에서 KoSBERT 실행](https://seyeon.tistory.com/90#c2-2)
-- [도커를 사용하여 KoSBERT 실행](https://velog.io/@orange6/%ED%8C%90%EB%A1%80-%EC%95%94%EA%B8%B0-%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C)
+- [도커를 사용하여 KoSBERT 실행](https://velog.io/@orange6/%ED%8C%90%EB%A1%80-%EC%95%94%EA%B8%B0-%EC%96%B4%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C#s-bert-%EC%8B%A4%ED%96%89%EC%9D%84-%EC%9C%84%ED%95%9C-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95)
